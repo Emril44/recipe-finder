@@ -1,101 +1,74 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from "react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    const [query, setQuery] = useState('');
+    const [cuisines, setCuisines] = useState('');
+    const [maxTime, setMaxTime] = useState('');
+    const [recipes, setRecipes] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+    const isButtonDisabled = !query && !cuisines && !maxTime;
+
+    const fetchRecipes = () => {
+        console.log("fetchRecipes is not implemented yet.");
+    };
+
+
+    return (
+    <div className="flex flex-col items-center min-h-screen p-4 bg-gray-400">
+      <h1 className="text-3xl font-bold mb-4">Yummers!</h1>
+      <h3 className="text-1xl font-bold mb-6">The Recipe Finder of your dreams :D</h3>
+
+        <div className="w-full max-w-md">
+            <input
+                type="text"
+                placeholder="Search for a recipe..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="w-full p-2 border rounded-lg shadow-md text-black bg-white"
+                />
+            <label htmlFor="cuisine" className="block mt-2 font-bold">Cuisine options</label>
+            <select
+                name="cuisine"
+                id="cuisine"
+                value={cuisines}
+                onChange={(e) => setCuisines(e.target.value)}
+                className="w-full p-2 mb-2 border rounded-lg shadow-md text-black bg-white placeholder-gray-400"
+                >
+                <option value="">Select a cuisine...</option>
+                <option value="italian">Italian</option>
+                <option value="mexican">Mexican</option>
+                <option value="chinese">Chinese</option>
+                <option value="japanese">Japanese</option>
+            </select>
+            <input
+                type="number"
+                placeholder="Maximum preparation time (in minutes)..."
+                value={maxTime}
+                onChange={(e) => setMaxTime(e.target.value)}
+                className="w-full p-2 border rounded-lg shadow-md text-black bg-white"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <button
+                onClick={() => fetchRecipes}
+                disabled={isButtonDisabled}
+                className={`w-full mt-2 p-2 rounded-lg ${isButtonDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
+            >Next
+            </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {loading && <p className="mt-4">Loading...</p> }
+        {error && <p className="mt-4 text-red-500">{error}</p>}
+
+        <ul className="mt-4 w-full max-w-md">
+            {recipes.map((recipe, index) => (
+                <li key={index} className="p-2 border-b bg-white shadow-sm rounded-md">
+                    {recipe.name}
+                </li>
+            ))}
+        </ul>
     </div>
   );
 }
