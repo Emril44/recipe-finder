@@ -29,7 +29,7 @@ async function fetchRecipes(searchParams: URLSearchParams) {
 
 export default function RecipesPage() {
     const searchParams = useSearchParams();
-    const [recipesData, setRecipesData] = useState<any>(null);
+    const [recipesData, setRecipesData] = useState<{ results: { id: number; title: string; image: string }[] } | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -47,7 +47,7 @@ export default function RecipesPage() {
             <h1 className="text-2xl font-bold mb-4">Recipes</h1>
             <Suspense fallback={<p>Loading...</p>}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-5xl">
-                    {recipesData?.results?.map((recipe: any) => (
+                    {recipesData?.results?.map((recipe: { id: number; title: string; image: string }) => (
                         <RecipeCard key={recipe.id} recipeId={recipe.id} title={recipe.title} image={recipe.image} />
                     ))}
                 </div>

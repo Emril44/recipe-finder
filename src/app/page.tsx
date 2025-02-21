@@ -7,7 +7,7 @@ export default function Home() {
     const [query, setQuery] = useState('');
     const [cuisines, setCuisines] = useState('');
     const [maxTime, setMaxTime] = useState('');
-    const [error, setError] = useState(false);
+    const [error] = useState(false);
     const router = useRouter();
 
     const isButtonDisabled = !query && !cuisines && !maxTime;

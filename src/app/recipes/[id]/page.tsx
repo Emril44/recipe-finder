@@ -20,7 +20,8 @@ async function fetchRecipeDetails(recipeId: number) {
 
 export default function RecipeDetailsPage() {
     const params = useParams();
-    const [recipeDetails, setRecipeDetails] = useState<any>(null);
+    const [recipeDetails, setRecipeDetails] = useState<{ image: string; title: string; readyInMinutes: number; servings: number; summary: string; extendedIngredients: { id: number; original: string }[] } | null>(null);
+
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -42,6 +43,7 @@ export default function RecipeDetailsPage() {
     return (
         <div className="flex flex-col items-center min-h-screen p-4 bg-white">
             <div className="w-full max-w-3xl flex flex-col items-center text-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={recipeDetails.image} alt={recipeDetails.title} className="w-3/4 max-w-lg h-auto object-cover rounded-md mb-4" />
                 <p className="font-semibold text-2xl text-black">{recipeDetails.title}</p>
                 <p className="text-base text-gray-600">⏳ {recipeDetails.readyInMinutes} min | 🍽 {recipeDetails.servings} servings</p>
@@ -50,7 +52,7 @@ export default function RecipeDetailsPage() {
             <div className="w-full max-w-2xl mt-6">
                 <h3 className="font-semibold text-lg text-black">Ingredients:</h3>
                 <ul className="text-sm list-disc list-inside text-gray-700">
-                    {recipeDetails.extendedIngredients.map((ingredient: any, index: number) => (
+                    {recipeDetails.extendedIngredients.map((ingredient: { id: number; original: string }, index: number) => (
                         <li key={`${ingredient.id}-${index}`}>{ingredient.original}</li>
                     ))}
                 </ul>
